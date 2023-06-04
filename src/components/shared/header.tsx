@@ -6,15 +6,17 @@ export function Header() {
       <div className='center'>
         <Logo>QURIOS</Logo>
         <Nav>
-          <li>
-            <a href="/">Produto</a>
-          </li>
-          <li>
-            <a href="/">Preços</a>
-          </li>
-          <li>
-            <a href="/">Sobre</a>
-          </li>
+          <ul>
+            <li>
+              <a href="/">Produto</a>
+            </li>
+            <li>
+              <a href="/">Preços</a>
+            </li>
+            <li>
+              <a href="/">Sobre</a>
+            </li>
+          </ul>
         </Nav>
         
         <button>Registrar-se</button>
@@ -75,11 +77,12 @@ const Logo = styled('h2', {
 })
 
 const Nav = styled('nav', {
-  listStyle: 'none',
-
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  ul: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    listStyle: 'none'
+  },
 
   'li > a': {
     textDecoration: 'none',
