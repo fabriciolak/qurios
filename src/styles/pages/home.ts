@@ -1,5 +1,4 @@
 import { styled } from "..";
-import { Card } from "../../components/shared/Card";
 
 export const Container = styled('div', {
   position: 'relative',
