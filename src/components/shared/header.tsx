@@ -1,11 +1,24 @@
-import { styled } from '../../styles/index'
+import { Menu } from 'lucide-react'
+import styles from './header.module.css'
+import { Button } from './Button'
+import { useState } from 'react'
 
 export function Header() {
+  const [mobileMenu, setMobileMenu] = useState<string>('closed')
+
+  function toggleMenu () {
+    setMobileMenu((prev) => {
+      console.log(prev === styles.open)
+      return prev === styles.open ? 'closed' : styles.open
+    })
+  }
+
   return (
-    <Container size="full">
-      <div className='center'>
-        <Logo>QURIOS</Logo>
-        <Nav>
+    <header className={styles.header}>
+      <div className={styles.container}>
+        <h2 className={styles.brand}>QURIOS</h2>
+        
+        <nav>
           <ul>
             <li>
               <a href="/">Produto</a>
@@ -17,82 +30,26 @@ export function Header() {
               <a href="/">Sobre</a>
             </li>
           </ul>
-        </Nav>
-        
-        <button>Registrar-se</button>
+          
+          <Button variant='primary' href='/'>Registrar-se</Button>
+        </nav>
+
+        <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />
       </div>
-    </Container>
+
+      <div>
+        <ul className={`${styles['mobile-menu']} ${mobileMenu}`}>
+          <li>
+            <a href="/">Produto</a>
+          </li>
+          <li>
+            <a href="/">Preços</a>
+          </li>
+          <li>
+            <a href="/">Sobre</a>
+          </li>
+        </ul>
+      </div>
+    </header>
   )
 }
-
-const Container = styled('div', {
-  width: '100%',
-  padding: '0 2rem',
-
-  backgroundColor: '$blue-light',
-
-  variants: {
-    size: {
-      full: {
-        maxWidth: '100%',
-      }
-    }
-  },
-
-  '.center': {
-    maxWidth: '1280px',
-    height: '7.5rem',
-    margin: '0 auto',
-    
-    display: 'flex',
-    alignItems: 'center',
-  
-    button: {
-      marginLeft: 'auto',
-      backgroundColor: 'transparent',
-
-      width: '140px',
-      height: '48px',
-
-      // boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.15)',
-      borderRadius: '2rem',
-      border: '1px solid #008BFE',
-
-      color: '#008BFE',
-
-      fontFamily: '$segoe',
-    },
-  }
-})
-
-const Logo = styled('h2', {
-  fontFamily: '$roboto',
-  fontSize: '1rem',
-  fontWeight: '700',
-  lineHeight: '1.5rem',
-  letterSpacing: '0.12rem',
-  color: '$title',
-
-  marginRight: '4.375rem'
-})
-
-const Nav = styled('nav', {
-  ul: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    listStyle: 'none'
-  },
-
-  'li > a': {
-    textDecoration: 'none',
-    fontFamily: '$roboto',
-    fontWeight: 500,
-
-    color: '$text'
-  },
-
-  'li + li': {
-    marginLeft: '4.375rem'
-  }
-})

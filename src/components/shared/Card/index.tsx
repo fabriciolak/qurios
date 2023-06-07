@@ -27,7 +27,7 @@ export function Card({ type, content }: ICardProps) {
           <p>{content}</p>
         </div>
         <div className="card-type-footer">
-          <span>QURIOS</span>
+          <span className='footer'>QURIOS</span>
         </div>
       </div>
     </Container>
