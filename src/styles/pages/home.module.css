@@ -47,9 +47,9 @@
 }
 
 @media (max-width: 1024px) {
-  .container_home {
-    height: calc(100vh - 7.5rem);
-  }
+  /* .container_home {
+    height: calc(100vh - 7.5rem + 120px);
+  } */
   .grid_home .container_background {
     display: none;
   }

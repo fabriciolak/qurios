@@ -133,7 +133,7 @@
 @media (max-width: 1024px) {
   .header {
     display: block;
-    position: unset;
+    /* position: unset; */
 
     background-color: var(--colors-blue-light);
   }
