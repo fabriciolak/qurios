@@ -1,3 +1,4 @@
+import { Badge } from "./components/shared/Badge"
 import { Button } from "./components/shared/Button"
 import { Card } from "./components/shared/Card"
 import { Header } from "./components/shared/header"
@@ -5,16 +6,17 @@ import { Header } from "./components/shared/header"
 import styles from "./styles/pages/home.module.css"
 // import * as HeroSection from "./styles/pages/hero-section"
 
-// import CardHeroSection from './assets/cards-hero-section.svg'
-// import CardGroupHeroSection from './assets/card-group-hero-section.svg'
-// import PaperHeroSection from './assets/paper-hero-section.svg'
+import CardHeroSection from './assets/cards-hero-section.svg'
+import CardGroupHeroSection from './assets/card-group-hero-section.svg'
+import PaperHeroSection from './assets/paper-hero-section.svg'
+import { Accordion } from "./components/shared/Accordion"
 // import { Badge } from "./components/shared/Badge"
 
 function App() {
   return (
     <>
       <Header />
-      <div className={styles.container_home}>
+      <section className={styles.container_home}>
         <div className={styles.grid_home}>
           <div className={styles.content_home}>
             <h1 className={styles.content_home_title}>Conheça os amigos de verdade com perguntas.</h1>
@@ -45,64 +47,78 @@ function App() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* 
-      <HeroSection.Section>
-        <HeroSection.Container>
-          <HeroSection.Content>
+      <section className={styles.container_custom_questions}>
+        <div className={styles.container_cq_center}>
+          <div className={styles.content_cq}>
             <Badge color="red-light">
               Pergunte o que quiser
             </Badge>
             <h2>Crie suas perguntas personalizadas</h2>
             <p>Crie suas próprias perguntas personalizadas em qualquer categoria e compartilhe com seus amigos.</p>
-          </HeroSection.Content>
+          </div>
 
-          <HeroSection.Content css={{
-            backgroundColor: '$red-light',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '16px',
-            position: 'relative'  
-          }}>
-            <img src={CardHeroSection} alt="Cards" style={{ width: '120%', height: 'auto', position: 'absolute' }} />
-          </HeroSection.Content>
-        </HeroSection.Container>
-      </HeroSection.Section>
+          <div className={styles.content_cq_image}>
+            <img src={CardHeroSection} alt="Card Hero" />
+          </div>
+        </div>
+      </section>
+      
+      <section className={styles.container_answer_questions}>
+        <div className={styles.container_pp_center}>
+          <div className={styles.content_pp_image}>
+            <img src={CardGroupHeroSection} alt="Card Hero" />
+          </div>
 
-      <HeroSection.Section>
-        <HeroSection.Container>
-          <HeroSection.Content>
-            <img src={CardGroupHeroSection} alt="Cards" />
-          </HeroSection.Content>
-
-          <HeroSection.Content>
+          <div className={styles.content_pp}>
             <Badge color="blue-light">
               Responda de forma divertida
             </Badge>
             <h2>Responda perguntas e descubra mais sobre seus amigos</h2>
             <p>Descubra mais sobre seus amigos respondendo perguntas divertidas e interessantes em diferentes categorias.</p>
-          </HeroSection.Content>
-        </HeroSection.Container>
-      </HeroSection.Section>
+          </div>
+        </div>
+      </section>
 
-      <HeroSection.Section>
-        <HeroSection.Container>
-          <HeroSection.Content>
+      <section className={styles.container_privacy_policy}>
+        <div className={styles.container_pp_center}>
+          <div className={styles.content_pp}>
             <Badge color="purple-light">
               Seus dados estão protegidos
             </Badge>
             <h2>Privacidade e segurança são nossas prioridades</h2>
             <p>Temos medidas de segurança e privacidade para garantir que seus dados e respostas permaneçam protegidos.</p>
-          </HeroSection.Content>
+          </div>
+      
+          <div className={styles.content_pp_image}>
+            <img src={PaperHeroSection} alt="Card Hero" />
+          </div>
+        </div>
+      </section>
 
-          <HeroSection.Content>
-            <img src={PaperHeroSection} alt="Cards" />
-          </HeroSection.Content>
-        </HeroSection.Container>
-      </HeroSection.Section> 
-      */}
+      <section className={styles.container_faq}>
+        <div className={styles.container_faq_center}>
+          <div className={styles.content_faq}>
+            <h2>Perguntas frequentes</h2>
+          </div>
+      
+          <div className={styles.content_faq_image}>
+            <p>Accordion</p>
+            {/* <Accordion /> */}
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div className={styles.container_footer}>
+          <p className={styles.footer_brand}>QURIOS</p>
+          <p className={styles.footer_message}>
+            <span>© 2023 FABRICIOLAK. </span>
+            Todos os direitos reservados
+          </p>
+        </div>
+      </footer>
     </>
   )
 }
