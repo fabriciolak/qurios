@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { Button } from '../../components/shared/Button'
 import { Loader } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext'
 
 const formSchemaValidation = z.object({
@@ -27,13 +27,46 @@ const formSchemaValidation = z.object({
 
 type formSchemaValidationType = z.infer<typeof formSchemaValidation>
 
+const errorSchema = z.object({
+  message: z.string()
+})
+
+type errorSchemaType = z.infer<typeof errorSchema>
+
 export function Register() {
-  const { handleSubmit, formState: { errors, isSubmitting, isValid }, register } = useForm<formSchemaValidationType>({
+  const { handleSubmit, formState: { errors, isSubmitting }, register, watch } = useForm<formSchemaValidationType>({
     resolver: zodResolver(formSchemaValidation)
   })
 
+  const [emailCustomError, setEmailCustomError] = useState('')
+  const [usernameCustomError, setUsernameCustomError] = useState('')
+
   const { signUp } = useContext(AuthContext)
   const navigate = useNavigate()
+
+  // console.log('isValidating: ', isValidating)
+
+  console.log(watch('email'))
+
+  function handleCustomError(customError: errorSchemaType, error: Error) {
+    console.log(error)
+
+    if (error.message === 'Email already exists.') {
+      setEmailCustomError((val) => {
+        return val === watch('email') ? '' : 'Este E-mail já está sendo utilizado por outro usuário. Tente outro'
+      })
+    } else {
+      setEmailCustomError('')
+    }
+
+    if (error.message === 'Username with same username already exists') {
+      setUsernameCustomError((val) => {
+        return val === watch('email') ? '' : 'Este nome de usuário já está sendo utilizado. Tente outro'
+      })
+    } else {
+      setUsernameCustomError('')
+    }
+  }
 
   async function onSignUp({ name, username, email, password }: formSchemaValidationType) {
     try {
@@ -42,7 +75,11 @@ export function Register() {
       navigate('/profile')
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error.message)
+        const customError = errorSchema.parse({
+          message: error.message
+        })
+
+        handleCustomError(customError, error)
       }
     }
   }
@@ -64,7 +101,13 @@ export function Register() {
           <label htmlFor="username">Nome de usuário</label>
           <input type="text" placeholder='johndoe' {...register('username', { required: true })} />
           <div className={styles.form_error_message}>
-            {errors.username && <span>{errors.username.message}</span>}
+            <span>
+              {
+                errors.username 
+                  ? errors.username.message
+                  : usernameCustomError
+              }
+            </span>
           </div>
         </div>
 
@@ -72,7 +115,13 @@ export function Register() {
           <label htmlFor="email">Email</label>
           <input type="text" placeholder='qurios@example.com' {...register('email', { required: true })} />
           <div className={styles.form_error_message}>
-            {errors.email && <span>{errors.email.message}</span>}
+            <span>
+              {
+                errors.email 
+                  ? errors.email.message
+                  : emailCustomError
+              }
+            </span>
           </div>
         </div>
 
@@ -84,7 +133,7 @@ export function Register() {
           </div>
         </div>
 
-        <Button disabled={!isValid} width='full' type="submit">
+        <Button disabled={isSubmitting} width='full' type="submit">
           {isSubmitting ? <Loader /> : 'Enviar'}
         </Button>
 

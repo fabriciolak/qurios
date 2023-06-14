@@ -20,7 +20,7 @@ const formSchemaValidation = z.object({
 type formSchemaValidationType = z.infer<typeof formSchemaValidation>
 
 export function Login() {
-  const { handleSubmit, formState: { errors, isSubmitting, isValid }, register } = useForm<formSchemaValidationType>({
+  const { handleSubmit, formState: { errors, isSubmitting }, register } = useForm<formSchemaValidationType>({
     resolver: zodResolver(formSchemaValidation)
   })
 
@@ -33,7 +33,7 @@ export function Login() {
   async function onSignUp(data: formSchemaValidationType) {
     try {
       await signIn({ email: data.email, password: data.password })
-
+      
       navigate('/profile')
     } catch (error) {
       if (error instanceof Error) {
@@ -41,11 +41,13 @@ export function Login() {
       }
     }
   }
-  
+
   return (
     <div className={styles['page-container']}>
       <section className={styles['left-container']}>
-        <h1>Ola</h1>
+        <h2>
+          Suave pô, os de verdade eu sei quem são!
+        </h2>
       </section>
       <section className={styles.container}>
         <h1>Entre no Qurios</h1>
@@ -69,7 +71,7 @@ export function Login() {
 
           <span className={styles['invalid-credentials']}>{invalidCredentials ? 'Desculpe, mas as credenciais fornecidas são inválidas.' : ''}</span>
 
-          <Button disabled={!isValid} width='full' type="submit">
+          <Button disabled={isSubmitting} width='full' type="submit">
             {isSubmitting ? <Loader /> : 'Enviar'}
           </Button>
 
