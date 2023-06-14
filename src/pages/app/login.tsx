@@ -4,7 +4,7 @@ import styles from '../../styles/pages/app/login.module.css'
 import { z } from 'zod'
 import { Button } from '../../components/shared/Button'
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext'
 import { Loader } from 'lucide-react'
 
@@ -41,7 +41,7 @@ export function Login() {
       }
     }
   }
-
+  
   return (
     <div className={styles['page-container']}>
       <section className={styles['left-container']}>
