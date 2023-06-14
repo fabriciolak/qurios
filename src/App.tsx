@@ -2,15 +2,14 @@ import { Badge } from "./components/shared/Badge"
 import { Button } from "./components/shared/Button"
 import { Card } from "./components/shared/Card"
 import { Header } from "./components/shared/header"
-// import * as Home from "./styles/pages/home"
 import styles from "./styles/pages/home.module.css"
-// import * as HeroSection from "./styles/pages/hero-section"
 
 import CardHeroSection from './assets/cards-hero-section.svg'
 import CardGroupHeroSection from './assets/card-group-hero-section.svg'
 import PaperHeroSection from './assets/paper-hero-section.svg'
 import { Accordion } from "./components/shared/Accordion"
-// import { Badge } from "./components/shared/Badge"
+
+import { Link } from "react-router-dom"
 
 function App() {
   return (
@@ -21,13 +20,16 @@ function App() {
           <div className={styles.content_home}>
             <h1 className={styles.content_home_title}>Conheça os amigos de verdade com perguntas.</h1>
             <p className={styles.content_home_description}>Crie perguntas para descobrir os segredos obscuros de seus amigos. Fique atento e veja quem realmente conhece! Escolha entre várias categorias e se divirta a qualquer momento. É simples, é gratuito e a diversão é garantida!</p>
-            <Button href="/" variant="primary" css={{
-              width: '368px',
-              height: '68px',
-              borderRadius: '999px',
-              fontSize: '1.5rem',
-              lineHeight: '2rem',
-            }}>Entrar</Button>
+            
+            <Link to={`/app/login`}>
+              <Button variant="primary" style={{
+                width: '368px',
+                height: '68px',
+                borderRadius: '999px',
+                fontSize: '1.5rem',
+                lineHeight: '2rem',
+              }}>Entrar</Button>
+            </Link>
           </div>
                 
           <div className={styles.container_background}>
@@ -103,9 +105,8 @@ function App() {
             <h2>Perguntas frequentes</h2>
           </div>
       
-          <div className={styles.content_faq_image}>
-            <p>Accordion</p>
-            {/* <Accordion /> */}
+          <div className={styles.content_faq_accordion}>
+            <Accordion />
           </div>
         </div>
       </section>

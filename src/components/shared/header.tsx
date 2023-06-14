@@ -2,6 +2,7 @@ import { Menu } from 'lucide-react'
 import styles from './header.module.css'
 import { Button } from './Button'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export function Header() {
   const [mobileMenu, setMobileMenu] = useState<string>('closed')
@@ -31,7 +32,9 @@ export function Header() {
             </li>
           </ul>
           
-          <Button variant='primary' href='/'>Registrar-se</Button>
+          <Link to={`/app/register`}>
+            <Button variant='primary'>Registre-se</Button>
+          </Link>
         </nav>
 
         <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />

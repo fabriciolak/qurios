@@ -319,19 +319,20 @@
 
 .container_faq {
   width: 100%;
-  height: 624px;
-
-  padding: 1rem 2rem;
+  height: 759px;
+  
+  padding: 0 2rem;
+  padding-top: 4rem ;
+  
   display: flex;
   justify-content: flex-start;
   align-items: center;
-
 }
 
 .container_faq_center {
   width: 100%;
   max-width: 1200px;
-  height: inherit;
+  height: 100%;
   margin: 0 auto;
 
   display: flex;
@@ -344,8 +345,7 @@
 .content_faq {
   width: 100%;
   max-width: 283px;
-  height: inherit;
-
+  margin-bottom: auto;
 }
 
 .content_faq h2 {
@@ -368,15 +368,14 @@
   color: var(--colors-title);
 }
 
-.content_faq_image {
+.content_faq_accordion {
   width: 100%;
   height: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-
-  /* background-color: red; */
+  flex-direction: column;
 }
 
 /* Footer */

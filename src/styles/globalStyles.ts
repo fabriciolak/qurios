@@ -11,13 +11,16 @@ export const globalStyles = globalCss({
     backgroundColor: '$white',
     color: '$text',
     '-webkit-font-smoothing': 'antialiased',
-    height: '200vh',
   },
   
   'body, input, textarea, button': {
     fontFamily: '$roboto',
     fontWeight: 'regular',
     fontSize: '1rem',
+  },
+
+  'a': {
+    textDecoration: 'none'
   },
 
   '@font-face': [

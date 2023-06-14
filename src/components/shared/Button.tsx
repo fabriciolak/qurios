@@ -1,27 +1,24 @@
-import { CSSProperties } from '@stitches/react'
-import { ButtonHTMLAttributes, ReactNode } from "react"
+import { HTMLProps, ReactNode,  } from "react"
 import { styled } from "../../styles"
+import { To } from "react-router-dom"
 
-interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface IButtonProps extends HTMLProps<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary'
-  css?: CSSProperties
+  width?: 'full' | 'auto'
+  to?: To
+  as?: string | any
   children: ReactNode
-  href: string
-  target?: string
 }
 
-export function Button ({ variant = 'primary', children, css, href, target = "_blank"}: IButtonProps) {
+export function Button ({ to, as = 'button', variant = 'primary', width = 'auto', children, ...props }: IButtonProps) {
   return (
-    <Container variant={variant} css={css as Record<string, never>}>
-      <a href={href} target={target}>
-        {children}
-      </a>
+    <Container as={as} to={to} variant={variant} width={width} {...props}>
+      {children}
     </Container>
   )
 }
 
-const Container = styled('button', {
-  width: 'auto',
+const Container = styled('div', {
   height: '2.5rem',
   padding: '8px 16px',
 
@@ -37,10 +34,11 @@ const Container = styled('button', {
   fontWeight: '500',
   fontSize: '1rem',
   lineHeight: '1.5rem',
+  color: '$white',
 
   
-  'a': {
-    textDecoration: 'none',
+  '&:disabled': {
+    opacity: 0.5
   },
 
   variants: {
@@ -50,7 +48,7 @@ const Container = styled('button', {
           color: '$white',
         },
         borderRadius: '8px',
-        backgroundColor: '$blue-dark'
+        backgroundColor: '$blue-dark',
       },
       secondary: {
         a: {
@@ -68,10 +66,19 @@ const Container = styled('button', {
         borderRadius: '8px',
         backgroundColor: 'transparent'
       },
+    },
+    width: {
+      full: {
+        width: '100%',
+      },
+      auto: {
+        width: 'auto',
+      }
     }
   },
 
   defaultVariants: {
-    variant: 'primary'
-  }
+    variant: 'primary',
+    width: 'auto'
+  },
 })
