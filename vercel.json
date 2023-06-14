@@ -1,0 +1,12 @@
+{
+  "rewrites":  [
+    { "source": "/", "destination": "/" },
+    { "source": "/profile", "destination": "/profile", "has": {
+      "type": "cookie",
+      "key": "qurios-token",
+      "missing": true
+    } },
+    { "source": "/app/login", "destination": "/app/login" },
+    { "source": "/app/register", "destination": "/app/register" }
+  ]
+}
