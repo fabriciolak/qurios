@@ -27,9 +27,9 @@ const formSchemaValidation = z.object({
 
 type formSchemaValidationType = z.infer<typeof formSchemaValidation>
 
-const errorSchema = z.object({
-  message: z.string()
-})
+// const errorSchema = z.object({
+//   message: z.string()
+// })
 
 // type errorSchemaType = z.infer<typeof errorSchema>
 
