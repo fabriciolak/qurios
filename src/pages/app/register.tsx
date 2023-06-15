@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { Button } from '../../components/shared/Button'
 import { Loader } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FormEvent, useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext'
 
 const formSchemaValidation = z.object({
@@ -31,7 +31,7 @@ const errorSchema = z.object({
   message: z.string()
 })
 
-type errorSchemaType = z.infer<typeof errorSchema>
+// type errorSchemaType = z.infer<typeof errorSchema>
 
 export function Register() {
   const { handleSubmit, formState: { errors, isSubmitting }, register, watch } = useForm<formSchemaValidationType>({
@@ -44,13 +44,7 @@ export function Register() {
   const { signUp } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  // console.log('isValidating: ', isValidating)
-
-  console.log(watch('email'))
-
-  function handleCustomError(customError: errorSchemaType, error: Error) {
-    console.log(error)
-
+  function handleCustomError(error: Error) {
     if (error.message === 'Email already exists.') {
       setEmailCustomError((val) => {
         return val === watch('email') ? '' : 'Este E-mail já está sendo utilizado por outro usuário. Tente outro'
@@ -75,75 +69,80 @@ export function Register() {
       navigate('/profile')
     } catch (error) {
       if (error instanceof Error) {
-        const customError = errorSchema.parse({
-          message: error.message
-        })
+        // const customError = errorSchema.parse({
+        //   message: error.message
+        // })
 
-        handleCustomError(customError, error)
+        handleCustomError(error)
       }
     }
   }
 
   return (
-    <section className={styles.container}>
-      <h1>Registre-se no Qurios</h1>
-     
-      <form onSubmit={handleSubmit(onSignUp)}>
-        <div className={styles['form-group']}>
-          <label htmlFor="name">Nome completo</label>
-          <input type="text" placeholder='John Doe' {...register('name', { required: true })} />
-          <div className={styles.form_error_message}>
-            {errors.name && <span>{errors.name.message}</span>}
-          </div>
-        </div>
-
-        <div className={styles['form-group']}>
-          <label htmlFor="username">Nome de usuário</label>
-          <input type="text" placeholder='johndoe' {...register('username', { required: true })} />
-          <div className={styles.form_error_message}>
-            <span>
-              {
-                errors.username 
-                  ? errors.username.message
-                  : usernameCustomError
-              }
-            </span>
-          </div>
-        </div>
-
-        <div className={styles['form-group']}>
-          <label htmlFor="email">Email</label>
-          <input type="text" placeholder='qurios@example.com' {...register('email', { required: true })} />
-          <div className={styles.form_error_message}>
-            <span>
-              {
-                errors.email 
-                  ? errors.email.message
-                  : emailCustomError
-              }
-            </span>
-          </div>
-        </div>
-
-        <div className={styles['form-group']}>
-          <label htmlFor="password">Senha</label>
-          <input type="text" placeholder='Senha' {...register('password', { required: true })} />
-          <div className={styles.form_error_message}>
-            {errors.password && <span>{errors.password.message}</span>}
-          </div>
-        </div>
-
-        <Button disabled={isSubmitting} width='full' type="submit">
-          {isSubmitting ? <Loader /> : 'Enviar'}
-        </Button>
-
-        <div className={styles['form-group']}>
-          <div className={styles.form_footer_message}>
-            Tem uma conta? <Link to={`/app/login`}>Entre</Link>
-          </div>
-        </div>
-      </form>
+    <div className={styles['page-container']}>
+      <section className={styles['left-container']}>
+        <h2>Não perca as perguntas dos seus amigos! Inscreva-se agora!</h2>
+      </section>
+      <section className={styles.container}>
+        <h1>Registre-se no Qurios</h1>
       
-    </section>
+        <form onSubmit={handleSubmit(onSignUp)}>
+          <div className={styles['form-group']}>
+            <label htmlFor="name">Nome completo</label>
+            <input type="text" placeholder='John Doe' {...register('name', { required: true })} />
+            <div className={styles.form_error_message}>
+              {errors.name && <span>{errors.name.message}</span>}
+            </div>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="username">Nome de usuário</label>
+            <input type="text" placeholder='johndoe' {...register('username', { required: true })} />
+            <div className={styles.form_error_message}>
+              <span>
+                {
+                  errors.username 
+                    ? errors.username.message
+                    : usernameCustomError
+                }
+              </span>
+            </div>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="email">Email</label>
+            <input type="text" placeholder='qurios@example.com' {...register('email', { required: true })} />
+            <div className={styles.form_error_message}>
+              <span>
+                {
+                  errors.email 
+                    ? errors.email.message
+                    : emailCustomError
+                }
+              </span>
+            </div>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="password">Senha</label>
+            <input type="text" placeholder='Senha' {...register('password', { required: true })} />
+            <div className={styles.form_error_message}>
+              {errors.password && <span>{errors.password.message}</span>}
+            </div>
+          </div>
+
+          <Button disabled={isSubmitting} width='full' type="submit">
+            {isSubmitting ? <Loader /> : 'Enviar'}
+          </Button>
+
+          <div className={styles['form-group']}>
+            <div className={styles.form_footer_message}>
+              Tem uma conta? <Link to={`/app/login`}>Entre</Link>
+            </div>
+          </div>
+        </form>
+        
+      </section>
+    </div>
   )
 }
