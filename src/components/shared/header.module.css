@@ -5,6 +5,16 @@
   z-index: 9999;
 }
 
+.header-authenticated {
+  position: relative;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  margin-bottom: 44px;
+  padding: 0 2rem;
+  z-index: 9999;
+}
+
 .container {
   max-width: 1280px;
   height: 7.5rem;
@@ -14,21 +24,26 @@
   align-items: center;
 }
 
-.header .container nav {
+.header-authenticated > .container {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.header .container nav, .header-authenticated nav {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.header .container nav ul {
+.header .container nav ul, .header-authenticated  nav ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
   list-style: none;
 }
 
-.header .container nav ul li > a {
+.header .container nav ul li > a, .header-authenticated  nav ul li > a {
   text-decoration: none;
   font-family: var(--fonts-roboto);
   font-weight: 500;
@@ -36,11 +51,11 @@
   color: var(--colors-text);
 }
 
-.header .container nav ul li + li {
+.header .container nav ul li + li, .header-authenticated  nav ul li + li{
   margin-left: 4.357rem;
 }
 
-.header .container .brand {
+.header .container .brand, .header-authenticated .brand {
   font-family: var(--fonts-roboto);
   font-size: 1rem;
   font-weight: 700;
@@ -53,6 +68,10 @@
 
 .header .container button {
   border-radius: 999px;
+}
+
+.header-authenticated button {
+  border-radius: 8px;
 }
 
 /* hamburger icon */
@@ -91,7 +110,7 @@
   padding: 0 2rem;
   list-style: none;
 
-  background-color: var(--colors-blue-light);
+  background-color: var(--colors-white);
 }
 
 .mobile-menu li {
@@ -112,11 +131,11 @@
 } 
 
 @media only screen and (max-width: 768px) {
-  .header .container nav {
+  .header .container nav, .header-authenticated nav {
     display: none;
   }
 
-  .header .container {
+  .header .container, .header-authenticated  {
     display: flex;
     justify-content: space-between;
   }
@@ -131,10 +150,12 @@
 }
 
 @media (max-width: 1024px) {
-  .header {
+  .header  {
     display: block;
-    /* position: unset; */
-
     background-color: var(--colors-blue-light);
+  }
+
+  .header-authenticated {
+    background-color: transparent;
   }
 }

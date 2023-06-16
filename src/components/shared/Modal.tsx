@@ -1,0 +1,115 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader, X } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
+import ModalReact from 'react-modal'
+import { z } from 'zod'
+import { Button } from './Button'
+import styles from './Modal.module.css'
+import Select from 'react-select'
+import { api } from '../../services/api'
+
+interface ModalQuestionProps {
+  modalIsOpen: boolean
+  closeModal(): void
+}
+
+const formQuestionSchemaValidation = z.object({
+  title: z.string().min(5, {
+    message: 'Tá muito curto! Mais detalhes, por favor! 🔍'
+  }),
+  type: z.object({ value: z.string(), label: z.string() }),
+  content: z.string()
+})
+
+const selectOptions = [
+  { value: "amizade", label: "Amizade" },
+  { value: "amor", label: "Amor" },
+  { value: "estudante", label: "Estudante" },
+  { value: "desconhecido", label: "Desconhecido" },
+  { value: "família", label: "Família" }
+];
+
+type FormQuestionSchemaValidationType = z.infer<typeof formQuestionSchemaValidation>
+
+export function Modal({ modalIsOpen, closeModal }: ModalQuestionProps) {
+  const { handleSubmit, control, formState: { errors, isSubmitting }, register} = useForm<FormQuestionSchemaValidationType>({
+    resolver: zodResolver(formQuestionSchemaValidation)
+  })
+
+  async function onCreateQuestion(data: FormQuestionSchemaValidationType) {
+    const response = await api.post('/question', {
+      title: data.title,
+      content: data.content,
+      anonymous: false
+    })
+
+    console.log(response)
+  }
+
+  return (
+    <div className={styles.container}>
+      <ModalReact
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{
+          content: {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100%',
+            maxWidth: '720px',
+            height: '476px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }
+        }}
+      >
+        <button onClick={closeModal} className={styles.close_button}><X /></button>
+        <form onSubmit={handleSubmit(onCreateQuestion)}>
+          <div className={styles['form-group']}>
+            <label htmlFor="email">Pergunta</label>
+            <input type="text" placeholder='Qual foi a última vez que...' {...register('title', { required: true })} />
+            <div className={styles.form_error_message}>
+              {errors.title && <span>{errors.title.message}</span>}
+            </div>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="password">Tipo</label>
+            
+            <Controller 
+              name='type'
+              control={control}
+              render={({ field }) => (
+                <Select 
+                  {...field}
+                  options={selectOptions}
+                  className={styles.select} 
+                />
+              )}
+            />
+
+            <div className={styles.form_error_message}>
+              {errors.content && <span>{errors.content.message}</span>}
+            </div>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="password">Sobre</label>
+            <input type="text" placeholder='Senha' {...register('content', { required: true })} />
+            <div className={styles.form_error_message}>
+              {errors.content && <span>{errors.content.message}</span>}
+            </div>
+          </div>
+
+
+          <Button disabled={isSubmitting} width='full' type="submit">
+            {isSubmitting ? <Loader /> : 'Enviar'}
+          </Button>
+        </form>
+      </ModalReact>
+    </div>
+  )
+}

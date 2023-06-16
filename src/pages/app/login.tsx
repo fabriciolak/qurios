@@ -4,9 +4,9 @@ import styles from '../../styles/pages/app/login.module.css'
 import { z } from 'zod'
 import { Button } from '../../components/shared/Button'
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext, useState } from 'react'
-import { AuthContext } from '../../contexts/authContext'
+import { useState } from 'react'
 import { Loader } from 'lucide-react'
+import { useAuth } from '../../hooks/useAuth'
 
 const formSchemaValidation = z.object({
   email: z.string().email({
@@ -28,13 +28,13 @@ export function Login() {
 
   const navigate = useNavigate()
 
-  const { signIn } = useContext(AuthContext)
+  const { signIn } = useAuth()
 
   async function onSignUp(data: formSchemaValidationType) {
     try {
       await signIn({ email: data.email, password: data.password })
       
-      navigate('/profile')
+      navigate('/questions')
     } catch (error) {
       if (error instanceof Error) {
         setInvalidCredentials(!!error.message)

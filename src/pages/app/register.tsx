@@ -5,8 +5,8 @@ import { z } from 'zod'
 import { Button } from '../../components/shared/Button'
 import { Loader } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext, useState } from 'react'
-import { AuthContext } from '../../contexts/authContext'
+import { useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 
 const formSchemaValidation = z.object({
   name: z.string().min(1, { 
@@ -41,7 +41,7 @@ export function Register() {
   const [emailCustomError, setEmailCustomError] = useState('')
   const [usernameCustomError, setUsernameCustomError] = useState('')
 
-  const { signUp } = useContext(AuthContext)
+  const { signUp } = useAuth()
   const navigate = useNavigate()
 
   function handleCustomError(error: Error) {
@@ -66,7 +66,7 @@ export function Register() {
     try {
       await signUp({ name, username, email, password })
       
-      navigate('/profile')
+      navigate('/questions')
     } catch (error) {
       if (error instanceof Error) {
         // const customError = errorSchema.parse({

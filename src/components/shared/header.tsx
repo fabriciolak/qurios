@@ -3,9 +3,23 @@ import styles from './header.module.css'
 import { Button } from './Button'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
+import { Modal } from './Modal'
+
 
 export function Header() {
   const [mobileMenu, setMobileMenu] = useState<string>('closed')
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+
+  const { user } = useAuth()
+
+  function openModal() {
+    setModalIsOpen((prev) => !prev)
+  }
+
+  function closeModal() {
+    setModalIsOpen((prev) => !prev)
+  }
 
   function toggleMenu () {
     setMobileMenu((prev) => {
@@ -14,45 +28,92 @@ export function Header() {
     })
   }
 
+  const path = window.location.pathname !== '/'
+
   return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <h2 className={styles.brand}>QURIOS</h2>
-        
-        <nav>
-          <ul>
-            <li>
-              <a href="/">Produto</a>
-            </li>
-            <li>
-              <a href="/">Preços</a>
-            </li>
-            <li>
-              <a href="/">Sobre</a>
-            </li>
-          </ul>
-          
-          <Link to={`/app/register`}>
-            <Button variant='primary'>Registre-se</Button>
-          </Link>
-        </nav>
+    <>
+      {user && path
+        ? (
+          <header className={styles['header-authenticated']}>
+            <div className={styles.container}>
+              <nav>
+                <ul>
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  <li>
+                    <a href="/">Perguntas</a>
+                  </li>
+                  <li>
+                    <a href="/">Profile</a>
+                  </li>
+                </ul>
+              </nav>
 
-        <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />
-      </div>
+              <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} />
 
-      <div>
-        <ul className={`${styles['mobile-menu']} ${mobileMenu}`}>
-          <li>
-            <a href="/">Produto</a>
-          </li>
-          <li>
-            <a href="/">Preços</a>
-          </li>
-          <li>
-            <a href="/">Sobre</a>
-          </li>
-        </ul>
-      </div>
-    </header>
+              <Button onClick={openModal} variant='primary'>Perguntar</Button>
+
+              <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />
+            </div>
+
+            <div>
+              <ul className={`${styles['mobile-menu']} ${mobileMenu}`}>
+                <li>
+                  <a href="/">Produto</a>
+                </li>
+                <li>
+                  <a href="/">Preços</a>
+                </li>
+                <li>
+                  <a href="/">Sobre</a>
+                </li>
+              </ul>
+            </div>
+          </header>
+        )
+        : (
+          <header className={styles.header}>
+            <div className={styles.container}>
+              <h2 className={styles.brand}>QURIOS</h2>
+              
+              <nav>
+                <ul>
+                  <li>
+                    <a href="/">Produto</a>
+                  </li>
+                  <li>
+                    <a href="/">Preços</a>
+                  </li>
+                  <li>
+                    <a href="/">Sobre</a>
+                  </li>
+                </ul>
+                
+                <Link to={`/app/register`}>
+                  <Button variant='primary'>Registre-se</Button>
+                </Link>
+              </nav>
+
+              <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />
+            </div>
+
+            <div>
+              <ul className={`${styles['mobile-menu']} ${mobileMenu}`}>
+                <li>
+                  <a href="/">Produto</a>
+                </li>
+                <li>
+                  <a href="/">Preços</a>
+                </li>
+                <li>
+                  <a href="/">Sobre</a>
+                </li>
+              </ul>
+            </div>
+          </header>
+        )
+      }
+    </>
   )
 }

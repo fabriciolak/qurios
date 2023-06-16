@@ -1,11 +1,12 @@
-import { useContext } from "react"
-import { AuthContext } from "../../contexts/authContext"
+import { Header } from "../../components/shared/header"
+import { useAuth } from "../../hooks/useAuth"
 
 export function Profile() {
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
 
   return (
     <>
+      <Header />
       <h1>Profile</h1>
       <p>{user.id}</p>
       <p>{user.email}</p>

@@ -7,14 +7,18 @@ import styles from "./styles/pages/home.module.css"
 import CardHeroSection from './assets/cards-hero-section.svg'
 import CardGroupHeroSection from './assets/card-group-hero-section.svg'
 import PaperHeroSection from './assets/paper-hero-section.svg'
-import { Accordion } from "./components/shared/Accordion"
 
+import { Accordion } from "./components/shared/Accordion"
 import { Link } from "react-router-dom"
+import Modal from 'react-modal'
+
+Modal.setAppElement('#root')
 
 function App() {
   return (
     <>
       <Header />
+
       <section className={styles.container_home}>
         <div className={styles.grid_home}>
           <div className={styles.content_home}>

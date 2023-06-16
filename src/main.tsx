@@ -9,6 +9,7 @@ import { Register } from './pages/app/register.tsx'
 import { Login } from './pages/app/login.tsx'
 import { ErrorPage } from './pages/error-page.tsx'
 import { Profile } from './pages/profile/index.tsx'
+import { QuestionsPage } from './pages/questions/index.tsx'
 
 globalStyles()
 
@@ -16,7 +17,7 @@ function publicGuestRoute(response: LoaderFunctionArgs) {
   const cookie = Cookies.get('qurios-token')
       
   if (cookie) {
-    return redirect('/profile')
+    return redirect('/questions')
   }
 
   return response
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <Profile />,
+    errorElement: <ErrorPage />,
+    loader: (response) => {
+      return privateRoute(response)
+    }
+  },
+  {
+    path: '/questions',
+    element: <QuestionsPage />,
     errorElement: <ErrorPage />,
     loader: (response) => {
       return privateRoute(response)
