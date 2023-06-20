@@ -131,6 +131,17 @@
 } 
 
 @media only screen and (max-width: 768px) {
+  .brand-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .brand-menu .brand {
+    margin-right: 0;
+  }
+  
   .header .container nav, .header-authenticated nav {
     display: none;
   }

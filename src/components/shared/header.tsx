@@ -36,16 +36,20 @@ export function Header() {
         ? (
           <header className={styles['header-authenticated']}>
             <div className={styles.container}>
+              <div className={styles['brand-menu']}>
+                <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />
+                <Link to={`/`}>
+                  <h2 className={styles.brand}>QURIOS</h2>
+                </Link>
+              </div>
+
               <nav>
                 <ul>
                   <li>
-                    <a href="/">Home</a>
+                    <a href="/questions">Perguntas</a>
                   </li>
                   <li>
-                    <a href="/">Perguntas</a>
-                  </li>
-                  <li>
-                    <a href="/">Profile</a>
+                    <a href="/profile">Perfil</a>
                   </li>
                 </ul>
               </nav>
@@ -53,8 +57,6 @@ export function Header() {
               <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} />
 
               <Button onClick={openModal} variant='primary'>Perguntar</Button>
-
-              <Menu onClick={toggleMenu} className={styles['hamburger-icon']} color='hsla(216, 18%, 34%, 1)' />
             </div>
 
             <div>

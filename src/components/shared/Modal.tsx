@@ -22,11 +22,11 @@ const formQuestionSchemaValidation = z.object({
 })
 
 const selectOptions = [
-  { value: "amizade", label: "Amizade" },
-  { value: "amor", label: "Amor" },
-  { value: "estudante", label: "Estudante" },
-  { value: "desconhecido", label: "Desconhecido" },
-  { value: "família", label: "Família" }
+  { value: "FRIEND", label: "Amizade" },
+  { value: "LOVE", label: "Amor" },
+  { value: "COLLEGE", label: "Estudante" },
+  { value: "STRANGER", label: "Desconhecido" },
+  { value: "FAMILY", label: "Família" }
 ];
 
 type FormQuestionSchemaValidationType = z.infer<typeof formQuestionSchemaValidation>
@@ -36,11 +36,15 @@ export function Modal({ modalIsOpen, closeModal }: ModalQuestionProps) {
     resolver: zodResolver(formQuestionSchemaValidation)
   })
 
+  
   async function onCreateQuestion(data: FormQuestionSchemaValidationType) {
+    console.log(data)
+
     const response = await api.post('/question', {
       title: data.title,
       content: data.content,
-      anonymous: false
+      anonymous: false,
+      type: data.type.value
     })
 
     console.log(response)
@@ -59,15 +63,18 @@ export function Modal({ modalIsOpen, closeModal }: ModalQuestionProps) {
             transform: 'translate(-50%, -50%)',
             width: '100%',
             maxWidth: '720px',
-            height: '476px',
+            height: '480px',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }
         }}
       >
-        <button onClick={closeModal} className={styles.close_button}><X /></button>
         <form onSubmit={handleSubmit(onCreateQuestion)}>
+          <div className={styles['close-area']}>
+            <button onClick={closeModal} className={styles.close_button}><X /></button>
+          </div>
+
           <div className={styles['form-group']}>
             <label htmlFor="email">Pergunta</label>
             <input type="text" placeholder='Qual foi a última vez que...' {...register('title', { required: true })} />

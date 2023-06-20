@@ -3,8 +3,13 @@ import Cookies from 'js-cookie'
 
 const cookieToken = Cookies.get('qurios-token')
 
+const apiUrl = {
+  dev: 'http://localhost:3333',
+  prod: 'https://qurios-backend.onrender.com'
+}
+
 export const api = axios.create({
-  baseURL: 'https://qurios-backend.onrender.com',
+  baseURL: apiUrl.prod,
   headers: {
     'Authorization': `Bearer ${cookieToken}`
   }

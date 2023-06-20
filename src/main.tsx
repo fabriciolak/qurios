@@ -10,6 +10,7 @@ import { Login } from './pages/app/login.tsx'
 import { ErrorPage } from './pages/error-page.tsx'
 import { Profile } from './pages/profile/index.tsx'
 import { QuestionsPage } from './pages/questions/index.tsx'
+import { ReplyPage } from './pages/reply/index.tsx'
 
 globalStyles()
 
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
   {
     path: '/questions',
     element: <QuestionsPage />,
+    errorElement: <ErrorPage />,
+    loader: (response) => {
+      return privateRoute(response)
+    }
+  },
+  {
+    path: '/reply/:replyId',
+    element: <ReplyPage />,
     errorElement: <ErrorPage />,
     loader: (response) => {
       return privateRoute(response)

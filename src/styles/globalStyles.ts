@@ -1,4 +1,24 @@
-import {globalCss} from '.'
+import { globalCss, keyframes } from '.'
+
+const skeletonAnimation = keyframes({
+  '0%': {
+    backgroundColor: 'hsl(200, 20%, 70%)'
+  },
+  
+  '100%': {
+    backgroundColor: 'hsl(200, 20%, 95%)'
+  }
+})
+
+const skeletonAnimationBorder = keyframes({
+  '0%': {
+    border: '1px solid hsl(200, 20%, 70%)'
+  },
+  
+  '100%': {
+    border: '1px solid hsl(200, 20%, 95%)'
+  }
+})
 
 export const globalStyles = globalCss({
   '*': {
@@ -23,6 +43,35 @@ export const globalStyles = globalCss({
     textDecoration: 'none'
   },
 
+  '.skeleton': {
+    opacity: '.7',
+    animation: `${skeletonAnimation} 1s linear infinite alternate`
+  },
+  
+  '.skeleton-text': {
+    width: '100%',
+    height: '.5em',
+    marginBottom: '.25em',
+    borderRadius: '.125em',
+  },
+  
+  '.skeleton-text-full': {
+    width: '100%',
+    height: '100%',
+    marginBottom: '.25em',
+    borderRadius: '.125em',
+  },
+  
+  '.skeleton-border': {
+    animation: `${skeletonAnimationBorder} 1s linear infinite alternate`,
+    border: '1px solid hsl(200, 20%, 95%)'
+  },
+  
+  '.skeleton-text:last-child': {
+    marginBottom: '0',
+    width: '80%',
+  },
+
   '@font-face': [
     {
       fontFamily: 'Segoe UI',
@@ -34,3 +83,4 @@ export const globalStyles = globalCss({
     }
   ]
 })
+

@@ -33,33 +33,28 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   
   useEffect(() => {
     const token = Cookies.get('qurios-token')
-  
+
+    
     if (token) {
-      try {
-        const tokenDecoded = jwtDecode(token as string) as { sub: string } ?? ''
+      api.get(`users/me`).then(response => {
+        const { name, username, email, id } = response.data
 
-        api.get(`/users/profile/${tokenDecoded.sub}`).then(response => {
-          const { name, username, email, id } = response.data
-
-          setUser(() => {
-            return { name, username, email, id }
-          })
+        setUser(() => {
+          return { name, username, email, id }
         })
-        .catch(() => {        
-          handleInvalidToken()
-        })
-      } catch (error) {
-        handleInvalidToken()
-      }
+      })
+      // .catch(() => {        
+      //   handleInvalidToken()
+      // })
     }
 
   }, [])
   
-  function handleInvalidToken() {
-    Cookies.remove('qurios-token')
-    setUser({})
-    window.location.href = '/app/login'
-  }
+  // function handleInvalidToken() {
+  //   Cookies.remove('qurios-token')
+  //   setUser({})
+  //   window.location.href = '/app/login'
+  // }
 
   async function signIn({ email, password }:SignInCredentialsType) {
     try {
