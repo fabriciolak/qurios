@@ -36,7 +36,7 @@ const commentSchema = z.object({
 
 export function ReplyPage() {
   const [question, setQuestion] = useState({} as QuestionProps)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const { replyId } = useParams()
   const { user } = useAuth()
@@ -48,8 +48,8 @@ export function ReplyPage() {
   useEffect(() => {
     async function getQuestion () {
       await api.get(`question/${replyId}`).then(response => response.data).then(data => {
+        setLoading(false)
         setQuestion(data)
-        setLoading(prev => !prev)
       })
     }
 
