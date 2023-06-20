@@ -12,15 +12,13 @@ interface QuestionProps {
 
 export function QuestionsPage() {
   const [questions, setQuestions] = useState<QuestionProps[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
       const { data } = await api.get('/question')
-      setLoading(prev => {
-        return !prev
-      })
       setQuestions(data)
+      setLoading(false)
     }
     
     fetchData()
