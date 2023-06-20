@@ -17,10 +17,10 @@ export function QuestionsPage() {
   useEffect(() => {
     async function fetchData() {
       const { data } = await api.get('/question')
-      setQuestions(data)
       setLoading(prev => {
         return !prev
       })
+      setQuestions(data)
     }
     
     fetchData()
