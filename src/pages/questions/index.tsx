@@ -19,7 +19,7 @@ export function QuestionsPage() {
       const { data } = await api.get('/question')
       setQuestions(data)
       setLoading(prev => {
-        return questions ? !prev : true
+        return !prev
       })
     }
     
