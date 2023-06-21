@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: (response) => {
       return privateRoute(response)
-    }
+    },
   },
   {
     path: '/questions',
