@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../services/api"
 import { Header } from "../../components/shared/header"
 import { styled } from "../../styles"
@@ -11,6 +11,8 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "../../hooks/useAuth"
+import { Trash } from "lucide-react"
+import Modal from 'react-modal'
 
 interface QuestionProps {
   created_at: string
@@ -34,15 +36,35 @@ const commentSchema = z.object({
   text: z.string().min(1, 'O mínimo necessário para publicar um comentário é de 1 caractere.')
 })
 
+const updateSchema = z.object({
+  title: z.string().trim().refine(val => val.trim().length > 0, {
+    message: 'Este campo não pode ficar em branco.'
+  }),
+  content: z.string().trim().refine(val => val.trim().length > 0, {
+    message: 'Este campo não pode ficar em branco.',
+  })
+})
+
+dayjs.extend(relativeTimePlugin)
+dayjs.locale(dayjsBrLocale)
+
 export function ReplyPage() {
   const [question, setQuestion] = useState({} as QuestionProps)
   const [loading, setLoading] = useState(true)
+  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState<boolean>(false)
+  const [modalUpdateIsOpen, setModaUpdateIsOpen] = useState<boolean>(false)
+
+  const navigate = useNavigate()
 
   const { replyId } = useParams()
   const { user } = useAuth()
 
   const { handleSubmit, formState: { errors }, register } = useForm<{ text: string }>({
     resolver: zodResolver(commentSchema)
+  })
+
+  const { handleSubmit: handleSubmitUpdateQuestion, formState: { errors: errorsSecondForm }, register: registerSecondForm } = useForm<{ title: string, content: string }>({
+    resolver: zodResolver(updateSchema)
   })
   
   useEffect(() => {
@@ -67,21 +89,126 @@ export function ReplyPage() {
     window.location.reload()
   }
 
-  dayjs.extend(relativeTimePlugin)
-  dayjs.locale(dayjsBrLocale)
+  async function handleDeleteQuestion() {
+    await api.delete('question', {
+      data: {
+        question_id: replyId
+      }
+    }).then(() => {
+      navigate('/questions')
+    })
+  }
+  
+  async function handleUpdateQuestion(data: { title: string, content: string }) {
+    await api.put(`question/${replyId}`, {
+      title: data.title,
+      content: data.content
+    })
+  }
+
+  console.log(question.content)
 
   return (
     <>
       <Header />
 
       <Container>
-        <h2>Resposta para: {question.title}</h2>
-        {userCanEdit ? <button>Editar</button> : ''}
+        <ReplyHeader>
+          <h2>Resposta para: {question.title}</h2>
+          {userCanEdit ? (
+            <div>
+              <Button onClick={() => setModaUpdateIsOpen(true)}>Editar</Button>
+              <Button variant="destructive" onClick={() => setModalDeleteIsOpen(true)}>
+                <Trash size={24} />
+              </Button>
+            </div>
+          ) : ''}
+          
+          <Modal
+            isOpen={modalDeleteIsOpen}
+            onRequestClose={() => setModalDeleteIsOpen(prev => !prev)}
+            style={{
+              content: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '480px',
+                height: '148px',
+                borderRadius: '16px'
+              }
+            }}
+          >
+            <ModalHeader>
+              <span>Tem certeza que deseja deletar?</span>
+            </ModalHeader>
+
+            <ModalFooter>
+              <Button variant="tertiary" onClick={() => setModalDeleteIsOpen(prev => !prev)}>Cancelar</Button>
+
+              <Button variant="destructive" onClick={handleDeleteQuestion}>
+                Excluir
+              </Button>
+            </ModalFooter>
+          </Modal>
+
+          <Modal
+            isOpen={modalUpdateIsOpen}
+            onRequestClose={() => setModaUpdateIsOpen(prev => !prev)}
+            id="update-modal"
+            style={{
+              content: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '480px',
+                height: '420px',
+                borderRadius: '16px'
+              }
+            }}
+          >
+            <ModalHeader>
+              <span>Insira os dados a ser atualizado</span>
+            </ModalHeader>
+
+
+            
+              <ModalContent>
+                <form onSubmit={handleSubmitUpdateQuestion(handleUpdateQuestion)}>
+                  <div className="form-group">
+                    <label htmlFor="title">Título</label>
+                    <InputModal type="text" id="title" placeholder='Novo título...' {...registerSecondForm('title', { required: { message: 'Este campo é obrigatório para atualizar uma questão', value: true } })} />
+                    <div>
+                      {errorsSecondForm.title && <span className="error-message">{errorsSecondForm.title.message}</span>}
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="content">Conteúdo</label>
+                    <InputModal type="text" id="content" placeholder='Novo título...' {...registerSecondForm('content', { required: { message: 'Este campo é obrigatório para atualizar uma questão', value: true } })} />
+                    <div>
+                      {errorsSecondForm.content && <span className="error-message">{errorsSecondForm.content.message}</span>}
+                    </div>
+                  </div>
+
+                  <ModalFooter>
+                    <Button variant="tertiary" onClick={() => setModaUpdateIsOpen(prev => !prev)} >Cancelar</Button>
+                    <Button>Atualizar</Button>
+                  </ModalFooter>
+
+                </form>
+              </ModalContent>
+
+          </Modal>
+        </ReplyHeader>
 
         <ReplyBox onSubmit={handleSubmit(handleSubmitComment)}>
+          <ReplyContent>{question.content}</ReplyContent>
+
           <ReplyTextArea {...register('text')} />
           {errors.text && <span>{errors.text.message}</span>}
-          <Button>Enviar</Button>
+          <Button>Responder</Button>
         </ReplyBox>
 
         {loading ? (
@@ -103,7 +230,7 @@ export function ReplyPage() {
           </>
         ) : (
           <>
-            {question.comments && question.comments.map((question) => (
+            {question && question.comments.map((question) => (
               <Comment key={question.id}>
                 <CommentAuthor>
                   {question.user.name}
@@ -131,6 +258,81 @@ const Container = styled('div', {
   margin: '0 auto',
   
   padding: '0 2rem',
+})
+
+const ReplyHeader = styled('div', {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+
+  'div': {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    gap: '16px'
+  }
+})
+
+const ModalHeader = styled('div', {
+  width: '100%',
+  fontFamily: '$roboto',
+  fontSize: '1.5rem',
+  fontWeight: '700',
+
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+
+  marginBottom: '32px',
+})
+
+const ModalContent = styled('div', {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  flexDirection: 'column',
+  gap: '16px',
+
+  '.form-group label': {
+    width: '100%',
+    fontFamily: 'var(--fonts-segoeui)',
+    fontSize: '16px',
+    fontWeight: '700',
+    lineHeight: '26px',
+    marginBottom: '12px',
+  
+    color: 'var(--colors-text)',
+  },
+
+  '.form-group .error-message': {
+    display: 'block',
+    height: '24px',
+    fontFamily: '$roboto',
+    fontSize: '12px',
+    margin: '8px 0',
+  }
+})
+
+const ModalFooter = styled('div', {
+  height: '56px',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  gap: '16px',
+})
+
+const InputModal = styled('input', {
+  width: '100%',
+  height: '40px',
+
+  border: '2px solid $gray-light',
+  padding: '8px 12px',
+  fontSize: '14px',
+  margin: '8px 0',
+  borderRadius: '8px',
+  outline: 'none',
 })
 
 const Comment = styled('div', {
@@ -179,10 +381,15 @@ const CommentContent = styled('div', {
 const ReplyBox = styled('form', {
   width: '100%',
   maxWidth: '1280px',
-  padding: '2rem',
+  padding: '0 2rem',
   borderRadius: '8px',
   border: '1px solid $gray-light',
   marginTop: '16px'
+})
+
+const ReplyContent = styled('div', {
+  width: '100%',
+  padding: '1.5rem 0'
 })
 
 const ReplyTextArea = styled('textarea', {

@@ -3,7 +3,7 @@ import { styled } from "../../styles"
 import { To } from "react-router-dom"
 
 interface IButtonProps extends HTMLProps<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'destructive'
   width?: 'full' | 'auto'
   to?: To
   as?: string | any
@@ -59,13 +59,19 @@ const Container = styled('div', {
         backgroundColor: 'transparent'
       },
       tertiary: {
-        a: {
-          color: '$blue-dark',
-        },
+        color: '$black',
+        fontWeight: '600',
         border: '1px solid rgba(0, 0, 0, 0)',
         borderRadius: '8px',
         backgroundColor: 'transparent'
       },
+      destructive: {
+        a: {
+          color: '$white',
+        },
+        borderRadius: '8px',
+        backgroundColor: '#811D1D',
+      }
     },
     width: {
       full: {
