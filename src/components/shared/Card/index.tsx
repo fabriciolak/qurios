@@ -6,6 +6,8 @@ interface ICardProps {
 }
 
 export function Card({ type, content }: ICardProps) {
+  const imageURL = new URL(`/src/assets/img/card-image-${type}.png`, import.meta.url).href
+  
   const cardDescriptionIndex = {
     friend: 'Amizade',
     love: 'Amor',
@@ -21,7 +23,7 @@ export function Card({ type, content }: ICardProps) {
           Card de {cardDescriptionIndex[type]}
         </div>
         <div className="card-type-image">
-          <img src="https://www.kindpng.com/picc/m/326-3260968_monkey-emoji-3-speak-no-evil-monkey.png" alt="Memoji Monkey 3" />
+          <img src={imageURL} alt={`Memoji Monkey ${type}`} />
         </div>
         <div className="card-type-content">
           <p>{content}</p>

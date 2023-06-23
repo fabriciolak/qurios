@@ -27,6 +27,8 @@ export function HorizontalCard({ id, content, type, isLoading }: ICardProps) {
     }
   }
 
+  const imageURL = new URL(`/src/assets/img/card-image-${type.toLocaleLowerCase()}.png`, import.meta.url).href
+
   return (
     <>
       {isLoading ? (
@@ -55,7 +57,7 @@ export function HorizontalCard({ id, content, type, isLoading }: ICardProps) {
               Card de {cardTypeBr[`${type}`].br}
             </CardType>
             <Image>
-              <img src="https://www.kindpng.com/picc/m/326-3260968_monkey-emoji-3-speak-no-evil-monkey.png" alt="Memoji Monkey 3" />
+              <img src={imageURL} alt={`Memoji Monkey ${type}`} />
             </Image>
             <Content>
               <p>{content}</p>
