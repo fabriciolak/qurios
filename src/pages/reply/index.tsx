@@ -53,6 +53,7 @@ export function ReplyPage() {
   const [loading, setLoading] = useState(true)
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState<boolean>(false)
   const [modalUpdateIsOpen, setModaUpdateIsOpen] = useState<boolean>(false)
+  const [publicationNameAlreadyExists, setPublicationNameAlreadyExists] = useState<boolean>(false)
 
   const navigate = useNavigate()
 
@@ -100,10 +101,20 @@ export function ReplyPage() {
   }
   
   async function handleUpdateQuestion(data: { title: string, content: string }) {
-    await api.put(`question/${replyId}`, {
-      title: data.title,
-      content: data.content
-    })
+    try {
+      await api.put(`question/${replyId}`, {
+        title: data.title,
+        content: data.content
+      }) 
+      
+      setModaUpdateIsOpen(false)
+      window.location.reload()
+    } catch (error) {
+      if (error instanceof Error) {
+        setPublicationNameAlreadyExists(!!error.message)
+      }
+    }
+
   }
 
   console.log(question.content)
@@ -163,7 +174,7 @@ export function ReplyPage() {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 width: '480px',
-                height: '420px',
+                height: '340px',
                 borderRadius: '16px'
               }
             }}
@@ -189,6 +200,12 @@ export function ReplyPage() {
                     <InputModal type="text" id="content" placeholder='Novo título...' {...registerSecondForm('content', { required: { message: 'Este campo é obrigatório para atualizar uma questão', value: true } })} />
                     <div>
                       {errorsSecondForm.content && <span className="error-message">{errorsSecondForm.content.message}</span>}
+                    </div>
+                  </div>
+                  
+                  <div className="form-group">
+                    <div>
+                      {publicationNameAlreadyExists && <span className="error-message">Desculpe, mas uma publicação com esse título já existe. Tente outro</span>}
                     </div>
                   </div>
 

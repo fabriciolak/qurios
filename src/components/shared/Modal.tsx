@@ -38,16 +38,18 @@ export function Modal({ modalIsOpen, closeModal }: ModalQuestionProps) {
 
   
   async function onCreateQuestion(data: FormQuestionSchemaValidationType) {
-    console.log(data)
+    try {
+      await api.post('/question', {
+        title: data.title,
+        content: data.content,
+        anonymous: false,
+        type: data.type.value
+      })
 
-    const response = await api.post('/question', {
-      title: data.title,
-      content: data.content,
-      anonymous: false,
-      type: data.type.value
-    })
-
-    console.log(response)
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -84,14 +86,15 @@ export function Modal({ modalIsOpen, closeModal }: ModalQuestionProps) {
           </div>
 
           <div className={styles['form-group']}>
-            <label htmlFor="password">Tipo</label>
+            <label htmlFor="type">Tipo</label>
             
             <Controller 
               name='type'
               control={control}
               render={({ field }) => (
                 <Select 
-                  {...field}
+                {...field}
+                  id="id"
                   options={selectOptions}
                   className={styles.select} 
                 />
@@ -104,8 +107,8 @@ export function Modal({ modalIsOpen, closeModal }: ModalQuestionProps) {
           </div>
 
           <div className={styles['form-group']}>
-            <label htmlFor="password">Sobre</label>
-            <input type="text" placeholder='Senha' {...register('content', { required: true })} />
+            <label htmlFor="sobre">Sobre</label>
+            <input type="text" id="sobre" placeholder='Descreva sua pergunta' {...register('content', { required: true })} />
             <div className={styles.form_error_message}>
               {errors.content && <span>{errors.content.message}</span>}
             </div>
