@@ -411,14 +411,29 @@ footer {
 }
 
 .footer_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
   font-family: var(--fonts-roboto);
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 1rem;
   line-height: 24px;
   letter-spacing: 0.017em;
 
-  color: var(--colors-text);
+  color: var(--colors-text)
 }
+
+.footer_message a {
+  display: flex;
+}
+
+.footer_message svg {
+  color: var(--colors-title);
+  cursor: pointer;
+}
+
 .footer_message span {
   font-family: var(--fonts-roboto);
   font-weight: 700;

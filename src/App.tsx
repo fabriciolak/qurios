@@ -11,6 +11,7 @@ import PaperHeroSection from './assets/paper-hero-section.svg'
 import { Accordion } from "./components/shared/Accordion"
 import { Link } from "react-router-dom"
 import Modal from 'react-modal'
+import { Github, Linkedin, LinkedinIcon, LucideLinkedin } from "lucide-react"
 
 Modal.setAppElement('#root')
 
@@ -117,10 +118,19 @@ function App() {
 
       <footer>
         <div className={styles.container_footer}>
-          <p className={styles.footer_brand}>QURIOS</p>
+          <p className={styles.footer_brand}>QURIOUS</p>
+
           <p className={styles.footer_message}>
-            <span>© 2023 FABRICIOLAK. </span>
-            Todos os direitos reservados
+            <span>
+              © 2023 FABRICIOLAK
+            </span>
+
+            <Link to={`https://www.linkedin.com/in/fabriciolak/`}>
+              <Linkedin />
+            </Link>
+            <Link to={`https://github.com/fabriciolak`}>
+              <Github />
+            </Link>
           </p>
         </div>
       </footer>
