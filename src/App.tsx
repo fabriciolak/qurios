@@ -11,7 +11,7 @@ import PaperHeroSection from './assets/paper-hero-section.svg'
 import { Accordion } from "./components/shared/Accordion"
 import { Link } from "react-router-dom"
 import Modal from 'react-modal'
-import { Github, Linkedin, LinkedinIcon, LucideLinkedin } from "lucide-react"
+import { Github, Linkedin } from "lucide-react"
 
 Modal.setAppElement('#root')
 
