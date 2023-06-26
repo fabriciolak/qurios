@@ -28,7 +28,7 @@ function App() {
             
             <Link to={`/app/login`}>
               <Button variant="primary" style={{
-                width: '368px',
+                width: '23rem',
                 height: '68px',
                 borderRadius: '999px',
                 fontSize: '1.5rem',
@@ -73,8 +73,8 @@ function App() {
       </section>
       
       <section className={styles.container_answer_questions}>
-        <div className={styles.container_pp_center}>
-          <div className={styles.content_pp_image}>
+        <div className={styles.container_aq_center}>
+          <div className={styles.content_aq_image}>
             <img src={CardGroupHeroSection} alt="Card Hero" />
           </div>
 

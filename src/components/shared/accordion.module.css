@@ -52,3 +52,9 @@
   padding-right: 48px;
   transition: all 0.5 cubic-bezier(1, 0, 1, 0);
 }
+
+@media (max-width: 668px) {
+  .accordion_title span {
+    margin-right: 24px;
+  }
+}
