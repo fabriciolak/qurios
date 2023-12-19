@@ -35,7 +35,7 @@ Foram usadas as seguintes tecnologias:
 
 ## 🧑‍🔧 Funcionalidades
 
-Algumas das funcionalidades propostas no desafio
+Algumas das funcionalidades
 
 - Autenticar e criar conta
 - Ver pergutnas feitas por outros usuários
@@ -44,9 +44,7 @@ Algumas das funcionalidades propostas no desafio
 
 ## 🚀 Como executar
 
-### Primeiro siga os passos do backend.
-
-[Link](https://github.com/fabriciolak/qurios-backend)
+### Primeiro siga os passos do backend nesse [link](https://github.com/fabriciolak/qurios-backend)
 
 Faça um clone do projeto e acesse a pasta criada.
 
@@ -55,7 +53,7 @@ git clone https://github.com/fabriciolak/qurios.git
 ```
 
 ```
-cd ignite-shop
+cd qurios
 ```
 
 Para iniciá-lo, siga os passos abaixo:
@@ -73,8 +71,6 @@ Aliases: `i`
 ```
   npm run dev
 ```
-
-<a href="https://www.figma.com/file/kJX0eJI4OLxasc9ALO2LvQ/Ignite-Shop-2.0-(Copy)" target="_blank">Ignite Shop</a>
 
 <h1 align="center">
   <a href="https://www.github.com/fabriciolak">
